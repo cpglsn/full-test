@@ -1,0 +1,2 @@
+# first run
+helm template 4helm/ | kubectl apply -f -

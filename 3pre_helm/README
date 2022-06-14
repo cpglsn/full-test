@@ -1,0 +1,9 @@
+# create ns that will be used in helm
+kubectl create ns full-test-ns
+
+# create dockerhub secret that will be used from kaniko to push the image
+kubectl -n full-test-ns create secret docker-registry regcred \
+  --docker-server=https://index.docker.io/v1/ \
+  --docker-username=CHANGE_HERE \
+  --docker-password=CHANGE_HERE \
+  --docker-email=CHANGE_HERE

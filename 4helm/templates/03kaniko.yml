@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kaniko
+  namespace: {{ .Values.namespace }}
+spec:
+  initContainers:
+    - name: init-clone-repo
+      image: alpine/git
+      args:
+        - clone
+        - --single-branch
+        - --
+        - {{ .Values.app.repo }}
+        - /context
+      volumeMounts:
+        - name: context
+          mountPath: /context
+  containers:
+    - name: kaniko
+      image: gcr.io/kaniko-project/executor:debug
+      args: ["--dockerfile=/context/5app/Dockerfile","--context=/context/5app/","--destination={{ .Values.image.name }}:{{ .Values.image.tag }}","--cleanup"]
+      volumeMounts:
+        - name: kaniko-secret
+          mountPath: /kaniko/.docker
+        - name: context
+          mountPath: /context
+  restartPolicy: Never
+  volumes:
+    - name: context
+      emptyDir: {}
+    - name: kaniko-secret
+      secret:
+        secretName: regcred
+        items:
+          - key: .dockerconfigjson
+            path: config.json
+

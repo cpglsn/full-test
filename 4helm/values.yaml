@@ -1,0 +1,14 @@
+# Default values for full-test.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+namespace: "full-test-ns"
+
+image:
+  name: "CHANGE_HERE/full-test"
+  tag: "1.1.0"
+
+app:
+  name: "full-test"
+  repo: "https://github.com/cpglsn/full-test.git"
+

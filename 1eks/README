@@ -1,0 +1,3 @@
+# create a minimal eks
+eksctl create cluster -f eksctl_minimal.yml
+

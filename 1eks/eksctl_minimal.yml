@@ -1,0 +1,18 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: internal
+  region: eu-west-1
+
+nodeGroups:
+  - name: scale-eu-west-1a
+    privateNetworking: true
+    instanceType: t3.medium
+    desiredCapacity: 1
+    maxSize: 10
+    availabilityZones: ["eu-west-1a"]
+    iam:
+      withAddonPolicies:
+        autoScaler: true
+

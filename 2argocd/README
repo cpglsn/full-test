@@ -1,0 +1,17 @@
+# create ns for argocd
+kubectl create ns argocd
+
+# install last stable version (can also be done via helm)
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+# since argocd is not exposed with lb, ingress or nodeport, we need to forward to local port
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+
+# get the password
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+
+# login
+https://localhost:8080
+  user: admin
+  pass: check output of the command above
+
