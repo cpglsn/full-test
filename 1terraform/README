@@ -1,0 +1,9 @@
+terraform init
+
+terraform plan
+
+terraform apply -auto-approve
+
+# stora locally kubectl config required to access to the cluster
+aws eks --region eu-west-1 update-kubeconfig --name internal
+
