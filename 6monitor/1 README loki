@@ -1,0 +1,18 @@
+# Helm update and install repo
+helm repo add grafana https://grafana.github.io/helm-charts
+
+helm repo update
+
+# install loki with grafana with additional prometheus
+helm upgrade --install loki grafana/loki-stack --namespace monitor --create-namespace --set grafana.enabled=true,prometheus.enabled=true
+
+# get grafana admin password
+kubectl get secret loki-grafana -n monitor -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+
+
+# Port-forward from the Grafana service (port 80) to your desktop (port 3000)
+kubectl port-forward -n monitor svc/loki-grafana 3000:80
+
+# In your browser, go to http://127.0.0.1:3000/
+# User: admin
+# Password: Output of the "kubectl get secret" command.

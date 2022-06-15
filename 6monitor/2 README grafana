@@ -1,0 +1,28 @@
+# after creating the api token from the GUI, execute the following to:
+
+# create dashboard (store the output, needed later)
+curl \
+  -X POST \
+  -H "Authorization: Bearer eyJrIjoiRFJkRVk0UGtDNGx3cUl0eE1kVm05ZHdQTnZsbUV6QTMiLCJuIjoiZnVsbC10ZXN0IiwiaWQiOjF9" \
+  -H "Content-Type: application/json" \
+  --data @grafana_dashboard.json \
+  http://localhost:3000/api/dashboards/db
+
+
+# get Loki source id (used in the panel creation section)
+curl \
+  -X GET \
+  -H "Authorization: Bearer eyJrIjoiRFJkRVk0UGtDNGx3cUl0eE1kVm05ZHdQTnZsbUV6QTMiLCJuIjoiZnVsbC10ZXN0IiwiaWQiOjF9" \
+  -H "Content-Type: application/json" \
+  http://localhost:3000/api/datasources | jq '.[] | select(.typeName | index("Loki")) | .id'
+
+
+# create log panel in the dashboard
+# modify grafana_panel.json to match the source id and the dashboard id 
+curl \
+  -X POST \
+  -H "Authorization: Bearer eyJrIjoiRFJkRVk0UGtDNGx3cUl0eE1kVm05ZHdQTnZsbUV6QTMiLCJuIjoiZnVsbC10ZXN0IiwiaWQiOjF9" \
+  -H "Content-Type: application/json" \
+  --data @grafana_panel.json \
+  http://localhost:3000/api/dashboards/db
+
